@@ -3057,5 +3057,38 @@ class Any(OctetString):
 
             return self._tagMap
 
+
+class AnyType(base.AbstractSimpleAsn1Item):
+    def __init__(self, value=None, **kwargs):
+        super(AnyType, self).__init__(**kwargs)
+        self.assigned_type = value
+
+    def __str__(self):
+        return str(self.type_name)
+
+
+class ClassInstanceList:
+
+    unique_key = None
+    instances = {}
+
+    @classmethod
+    def setUniqueKey(cls, key):
+        cls.unique_key = key.__name__
+
+    @classmethod
+    def addInstance(cls, mapping):
+        identifier = str(mapping[cls.unique_key])
+        cls.instances[identifier] = mapping
+
+    @classmethod
+    def getInstance(cls, identifier):
+        return cls.instances[identifier]
+
+    @classmethod
+    def getIdentifiers(cls):
+        return cls.instances.keys()
+
+
 # XXX
 # coercion rules?
